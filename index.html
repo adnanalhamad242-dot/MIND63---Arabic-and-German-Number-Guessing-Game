@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10172a">
+<title>MIND·63 | لعبة تخمين الأرقام</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#121d34;--panel2:#182641;--line:#2c3b5a;--accent:#8b9cff;--text:#f4f6ff;--muted:#b3bfd8;--good:#a7f3d0}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(rgba(5,10,30,.76),rgba(5,10,30,.88)),url("background.jpg") center center / cover fixed;background-color:#0b1020;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);min-height:100vh;padding:18px}
+button{font:inherit;cursor:pointer;border:0;transition:transform .15s,filter .15s}button:active{transform:scale(.98)}.wrap{max-width:780px;margin:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 20px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#6677ff,#9c6bff);display:grid;place-items:center;font-size:23px;box-shadow:0 8px 30px #6575ff44}.brand b{display:block;font-size:18px;letter-spacing:.08em}.brand small{color:var(--muted)}
+.lang{display:flex;padding:4px;background:#17233c;border:1px solid var(--line);border-radius:12px;gap:3px}.lang button{padding:8px 12px;border-radius:9px;background:transparent;color:var(--muted)}.lang button.active{background:#7787ff;color:white}
+.hero{text-align:center;padding:22px 12px 24px}.eyebrow{color:#aebaff;font-size:12px;letter-spacing:.16em;font-weight:800}.hero h1{font-size:clamp(27px,6vw,42px);line-height:1.2;margin:12px 0}.hero p{color:var(--muted);line-height:1.8;max-width:560px;margin:0 auto}
+.tip{background:#172540;border:1px solid #2c3d62;border-radius:16px;padding:15px 17px;color:#d8e1f5;line-height:1.7;margin:0 0 18px}.progress-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px;margin:20px 2px 10px}.progress{display:flex;gap:6px;margin-bottom:17px}.progress span{height:5px;border-radius:10px;background:#293650;flex:1}.progress span.done{background:var(--accent)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:linear-gradient(160deg,#182641,#111a2e);border:1px solid var(--line);border-radius:20px;padding:15px;min-width:0}.card.answered{border-color:#6677ff;box-shadow:0 0 0 1px #6677ff22}.cardtop{display:flex;align-items:center;gap:11px;margin-bottom:12px}.value{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:#2b3b62;font-size:21px;font-weight:800}.card h2{font-size:16px;margin:0 0 3px}.status{font-size:12px;color:var(--muted)}.nums{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-bottom:13px}.num{border-radius:6px;background:#0c1528;text-align:center;padding:5px 0;font-size:12px;color:#d7e0f4}.num.base{background:#4657a1;color:#fff;font-weight:800}
+.answers{display:flex;gap:8px}.answers button{flex:1;padding:10px 4px;border:1px solid #415173;background:#10192c;color:#e7ecff;border-radius:11px;font-size:13px}.answers button.selected{background:#5969d9;border-color:#8995ff;color:#fff}
+.action{width:100%;border-radius:14px;background:linear-gradient(100deg,#6375ff,#9b68f5);color:white;font-weight:800;padding:15px;margin-top:17px;box-shadow:0 9px 28px #6677ff25}.action:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}.result{display:none;text-align:center;margin-top:18px;padding:26px 18px;border-radius:22px;background:linear-gradient(145deg,#222e58,#18213d);border:1px solid #6979ff}.result.show{display:block;animation:pop .35s ease}.result .big{font-size:clamp(60px,15vw,88px);font-weight:900;color:#b7c0ff;line-height:1.2;margin:8px}.result p{color:#d3dcf1}.secondary{border:1px solid #6374a0;background:transparent;color:#f4f6ff;border-radius:12px;padding:12px 16px;margin-top:8px}
+details{margin:18px 0;background:#121d34;border:1px solid var(--line);border-radius:15px;padding:14px 16px;color:var(--muted);line-height:1.8}summary{cursor:pointer;color:#f1f4ff;font-weight:700}footer{text-align:center;color:#7383a4;font-size:12px;padding:16px}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:500px){body{padding:12px}.cards{grid-template-columns:1fr}.card{padding:14px}.hero{padding:15px 4px 20px}.hero h1{font-size:29px}.nums{grid-template-columns:repeat(8,minmax(0,1fr))}.num{font-size:12px;padding:5px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="logo">✦</div><div><b>MIND·63</b><small id="brandSub">لعبة الذكاء الرياضي</small></div></div>
+  <div class="lang" aria-label="Language"><button id="arBtn" class="active" type="button">عربي</button><button id="deBtn" type="button">DE</button></div>
+</header>
+<section class="hero">
+  <div class="eyebrow">THE NUMBER MIND READER</div>
+  <h1 id="title">هل أستطيع قراءة أفكارك؟</h1>
+  <p id="subtitle">فكّر برقم من 1 إلى 63، أجب عن ست بطاقات، ودع اللعبة تكتشف رقمك السري.</p>
+</section>
+<div class="tip" id="instruction">💡 اختر رقماً من 1 إلى 63 في ذهنك فقط. لكل بطاقة، اضغط «نعم» إذا كان رقمك موجوداً فيها أو «لا» إذا لم يكن موجوداً.</div>
+<div class="progress-head"><span id="progressLabel">التقدم</span><strong id="count">0 / 6</strong></div>
+<div class="progress" id="progress"></div>
+<div class="cards" id="cards"></div>
+<button class="action" id="reveal" disabled>✦ اكشف الرقم السري</button>
+<section class="result" id="result" aria-live="polite">
+  <div style="font-size:32px">🎉</div><h2 id="resultTitle">تم اكتشاف الرقم!</h2><div class="big" id="number">25</div>
+  <p id="resultText">هل تريد تجربة رقم جديد؟</p><button class="action" id="again">↻ العب من جديد</button>
+</section>
+<details><summary id="rulesTitle">كيف تعمل اللعبة؟</summary><p id="rulesText">كل بطاقة تمثل قيمة ثنائية: 1، 2، 4، 8، 16 أو 32. إذا كان رقمك موجوداً في البطاقة نجمع قيمتها. مجموع قيم البطاقات التي أجبت عنها بنعم هو رقمك السري.</p></details>
+<footer>MIND·63 · <span id="footerText">لعبة أرقام ذكية من 1 إلى 63</span></footer>
+</div>
+<script>
+const values=[1,2,4,8,16,32], nums=Array.from({length:63},(_,i)=>i+1);
+const copy={
+ ar:{sub:"لعبة الذكاء الرياضي",title:"هل أستطيع قراءة أفكارك؟",subtitle:"فكّر برقم من 1 إلى 63، أجب عن ست بطاقات، ودع اللعبة تكتشف رقمك السري.",instruction:"💡 اختر رقماً من 1 إلى 63 في ذهنك فقط. لكل بطاقة، اضغط «نعم» إذا كان رقمك موجوداً فيها أو «لا» إذا لم يكن موجوداً.",progress:"التقدم",card:"البطاقة",waiting:"لم تجب بعد",yes:"✓ نعم",no:"✕ لا",answered:"تمت الإجابة",reveal:"✦ اكشف الرقم السري",resultTitle:"تم اكتشاف الرقم!",resultText:"الرقم الذي فكرت فيه هو:",again:"↻ العب من جديد",rulesTitle:"كيف تعمل اللعبة؟",rulesText:"كل بطاقة تمثل قيمة ثنائية: 1، 2، 4، 8، 16 أو 32. إذا كان رقمك موجوداً في البطاقة نجمع قيمتها. مجموع قيم البطاقات التي أجبت عنها بنعم هو رقمك السري.",footer:"لعبة أرقام ذكية من 1 إلى 63",count:n=>`${n} / 6`,cardTitle:n=>`البطاقة ${n}`},
+ de:{sub:"Das mathematische Denkspiel",title:"Kann ich deine Gedanken lesen?",subtitle:"Denk an eine Zahl von 1 bis 63. Beantworte sechs Karten und lass uns deine Zahl erraten.",instruction:"💡 Denk nur an eine Zahl zwischen 1 und 63. Tippe auf „Ja“, wenn deine Zahl auf der Karte steht, sonst auf „Nein“.",progress:"Fortschritt",card:"Karte",waiting:"Noch nicht beantwortet",yes:"✓ Ja",no:"✕ Nein",answered:"Beantwortet",reveal:"✦ Geheime Zahl aufdecken",resultTitle:"Zahl erkannt!",resultText:"Du hast an diese Zahl gedacht:",again:"↻ Nochmal spielen",rulesTitle:"Wie funktioniert das Spiel?",rulesText:"Jede Karte steht für einen Binärwert: 1, 2, 4, 8, 16 oder 32. Wenn deine Zahl auf einer Karte steht, addieren wir ihren Wert. Die Summe aller Ja-Karten ist deine geheime Zahl.",footer:"Zahlenrätsel von 1 bis 63",count:n=>`${n} / 6`,cardTitle:n=>`Karte ${n}`}
+};
+let lang="ar",answers=Array(6).fill(null);
+const $=id=>document.getElementById(id);
+function render(){
+ const t=copy[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ ["brandSub","title","subtitle","instruction","progressLabel","reveal","resultTitle","resultText","again","rulesTitle","rulesText","footerText"].forEach(id=>{const key={brandSub:"sub",title:"title",subtitle:"subtitle",instruction:"instruction",progressLabel:"progress",reveal:"reveal",resultTitle:"resultTitle",resultText:"resultText",again:"again",rulesTitle:"rulesTitle",rulesText:"rulesText",footerText:"footer"}[id];if($(id))$(id).textContent=t[key]});
+ $("arBtn").classList.toggle("active",lang==="ar");$("deBtn").classList.toggle("active",lang==="de");
+ $("count").textContent=t.count(answers.filter(x=>x!==null).length);
+ $("progress").innerHTML=values.map((v,i)=>`<span class="${answers[i]!==null?"done":""}"></span>`).join("");
+ $("cards").innerHTML=values.map((v,i)=>{
+ const included=nums.filter(n=>(n&v)!==0);
+ return `<article class="card ${answers[i]!==null?"answered":""}"><div class="cardtop"><div class="value">${v}</div><div><h2>${t.cardTitle(i+1)}</h2><div class="status">${answers[i]===null?t.waiting:t.answered}</div></div></div><div class="nums">${included.map(n=>`<span class="num ${n===v?"base":""}">${n}</span>`).join("")}</div><div class="answers"><button class="${answers[i]===true?"selected":""}" data-i="${i}" data-a="yes">${t.yes}</button><button class="${answers[i]===false?"selected":""}" data-i="${i}" data-a="no">${t.no}</button></div></article>`
+ }).join("");
+ $("reveal").disabled=answers.some(x=>x===null);$("result").classList.remove("show");
+ document.querySelectorAll("[data-i]").forEach(b=>b.addEventListener("click",()=>{answers[+b.dataset.i]=b.dataset.a==="yes";render()}));
+}
+function reveal(){const result=answers.reduce((s,a,i)=>s+(a?values[i]:0),0);$("number").textContent=result;$("result").classList.add("show");$("result").scrollIntoView({behavior:"smooth",block:"center"})}
+$("arBtn").addEventListener("click",()=>{lang="ar";render()});$("deBtn").addEventListener("click",()=>{lang="de";render()});
+$("reveal").addEventListener("click",reveal);$("again").addEventListener("click",()=>{answers=Array(6).fill(null);render();window.scrollTo({top:0,behavior:"smooth"})});
+render();
+</script>
+</body></html>
